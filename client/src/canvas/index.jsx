@@ -10,7 +10,7 @@ const CanvasModel = () => {
   return (
     <Canvas
       shadows
-      camera={{position: [0,0,0], fov: 30}}
+      camera={{position: [0,0,0], fov: 25}}
       gl={{preserveDrawingBuffer: true}}
       className='w-full max-w-full h-full transiton-all ease-in'
     >

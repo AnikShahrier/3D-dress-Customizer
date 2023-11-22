@@ -13,6 +13,68 @@ import { ColorPicker, AIPicker, FilePicker, Tab, CustomButton } from '../compone
 
 const Customizer = () => {
   const snap = useSnapshot(state);
+
+  const [file, setFile] = useState('');
+  const [prompt, setPrompt] = useState('');
+  const [generatingImg, setGeneratingImg] = useState(false);
+
+  const [activeEditorTab, setActiveEditorTab] = useState("");
+  const [activeFilterTab, setActiveFilterTab] = useState({
+    logoShirt: true,
+    stylishShirt: false,
+  })
+  //show tab content depending on the active tab
+  const generateTabContent =() =>{
+    switch(activeEditorTab){
+      case "colorpicker":
+        return <ColorPicker />
+      case "filepicker":
+        return <FilePicker
+          file = {file}
+          setFile = {setFile}
+          readFile = {readFile}
+        />
+      case "aipicker":
+        return <AIPicker />
+
+      default:
+        return null;  
+    }
+
+  }
+
+  const handlDecals = (type, result) => {
+    const decalType = DecalTypes [type];
+    state [decalType.stateProperty] = result ;
+
+    if(!activeEditorTab[decalType.filterTab]){
+      handlActiveFilterTab(decalType.filterTab)
+    }
+  }
+
+  const handlActiveFilterTab = (tabName) => {
+    switch(tabName){
+      case "logoShirt":
+        state.isLogoTexture = !activeFilterTab[tabName];
+        break;
+
+      case "stylishShirt":
+        state.isFullTexture = !activeFilterTab[tabName];
+        break;
+
+      default:
+        state.isFullTexture = false;
+        state.isLogoTexture = true;
+    }
+  }
+  const readFile = (type) => {
+    reader(file)
+      .then((result) => {
+        handlDecals(type, result);
+        setActiveEditorTab("");
+
+      })
+  }
   return (
     <AnimatePresence>
       {!snap.intro &&(
@@ -24,9 +86,10 @@ const Customizer = () => {
               <Tab
               key={tab.name}
               tab = {tab}
-              handlclick = {() =>{}}
+              handlclick = {() => setActiveEditorTab(tab.name)}
               />
             ))}
+            {generateTabContent()}
           </div>
         </div>
 
@@ -35,7 +98,7 @@ const Customizer = () => {
         <CustomButton
         type="filled"
         title="Go Back"
-        handlClick={() => state.intro = true}
+        handlclick={() => state.intro = true}
         customStyles="w-fit px-4 py-2.5 font-bold text sm"
 
         />
