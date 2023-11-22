@@ -8,9 +8,14 @@ import Backdrop from './Backdrop';
 
 const CanvasModel = () => {
   return (
-    <Canvas>
+    <Canvas
+      shadows
+      camera={{position: [0,0,0], fov: 30}}
+      gl={{preserveDrawingBuffer: true}}
+      className='w-full max-w-full h-full transiton-all ease-in'
+    >
       <ambientLight intensity={0.5} />
-      <Environment preset='city' />
+      <Environment preset="city" />
       <CameraRig>
         <Backdrop />
         <Center>

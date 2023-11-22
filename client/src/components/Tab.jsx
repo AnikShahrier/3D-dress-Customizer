@@ -1,6 +1,10 @@
 import React from 'react'
+import {useSnapshot} from 'valtio';
+import state from '../store';
 
-const Tab = () => {
+const Tab = ({tab, isFilterTab, isActiveTab, handlclick}) => {
+const snap = useSnapshot(state);
+
   return (
     <div>Tab</div>
   )
