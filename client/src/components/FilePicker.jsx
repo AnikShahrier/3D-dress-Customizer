@@ -27,14 +27,14 @@ const FilePicker = ({file, setFile, readFile}) => {
         <CustomButton 
           type='outline'
           title='Logo'
-          handlclick={() => readFile('logo')}
+          handlClick={() => readFile('logo')}
           customStyles='text-xs'
 
         />
         <CustomButton 
           type='filled'
           title='Full'
-          handlclick={() => readFile('full')}
+          handlClick={() => readFile('full')}
           customStyles='text-xs'
           
         />

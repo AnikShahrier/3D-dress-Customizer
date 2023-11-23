@@ -35,7 +35,7 @@ const Home = () => {
               <CustomButton
                type ="filled"
                 title = 'Customize it'
-                handlClick={()=> state.intro = false}
+                handlClick={() => state.intro = false}
                 customStyles= "w-fit px-4 py-2.5 font-bold text-sm"
               />
             </motion.div>

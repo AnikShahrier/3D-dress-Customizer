@@ -11,6 +11,8 @@ import {fadeAnimation, slideAnimation}  from '../config/motion';
 import { ColorPicker, AIPicker, FilePicker, Tab, CustomButton } from '../components';
 
 
+
+
 const Customizer = () => {
   const snap = useSnapshot(state);
 
@@ -35,12 +37,45 @@ const Customizer = () => {
           readFile = {readFile}
         />
       case "aipicker":
-        return <AIPicker />
+        return <AIPicker 
+          prompt={prompt}
+          setPrompt={setPrompt}
+          generatingImg={generatingImg}
+          handlSubmit={handlSubmit}
+        />
 
       default:
         return null;  
     }
 
+  }
+
+  const handlSubmit = async(type) => {
+    if(!prompt) return ("Please enter a prompt");
+    try{
+      setGeneratingImg(true);
+
+      const response = await fetch('http://localhost:8080/api/v1/dalle', {
+        method: 'POST',
+        headers: {
+          'Content-Type':'application/json'
+        },
+        body: JSON.stringify({
+          prompt,
+        })
+      })
+
+      const data = await response.json();
+      handlDecals(type, `data:image/png;b64,${data.photo}`)
+
+    } catch(error){
+      alert(error)
+    }finally{
+        setGeneratingImg(false);
+        setActiveEditorTab("");
+
+      }
+    
   }
 
   const handlDecals = (type, result) => {
@@ -65,7 +100,17 @@ const Customizer = () => {
       default:
         state.isFullTexture = false;
         state.isLogoTexture = true;
+        break;
     }
+
+    //after setting the state, active filter tab is updated
+
+    setActiveFilterTab((prevState) => {
+      return{
+        ...prevState,
+        [tabName] : !prevState[tabName]
+      }
+    })
   }
   const readFile = (type) => {
     reader(file)
@@ -98,7 +143,7 @@ const Customizer = () => {
         <CustomButton
         type="filled"
         title="Go Back"
-        handlclick={() => state.intro = true}
+        handlClick={() => state.intro = true}
         customStyles="w-fit px-4 py-2.5 font-bold text sm"
 
         />
@@ -110,8 +155,8 @@ const Customizer = () => {
               key={tab.name}
               tab = {tab}
               isFilterTab
-              isActiveTab = " "
-              handlclick = {() =>{}}
+              isActiveTab = {activeFilterTab[tab.name]}
+              handlclick = {() => handlActiveFilterTab(tab.name)}
               />
             ))}
 
