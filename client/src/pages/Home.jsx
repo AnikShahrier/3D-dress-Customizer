@@ -29,7 +29,7 @@ const Home = () => {
             </h1>
             </motion.div>
             <motion.div className='flex flex-col gap-5'{...headContentAnimation}>
-              <p className='max-w-md font-normal text-gray-600 text-base'>
+              <p className='max-w-md font-normal text-grey-600 text-base'>
                 This is your place to create your unique shirt with our brand-new 3D dress customizer.<strong>Be Yourself, Be Unique</strong>{" "} and define your own style.
               </p>
               <CustomButton
